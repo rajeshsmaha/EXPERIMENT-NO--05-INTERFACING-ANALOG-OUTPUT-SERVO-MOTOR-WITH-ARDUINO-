@@ -1,5 +1,4 @@
-###  DATE: 21/03/2024
-
+###  DATE: 18/04/2024
 ###  NAME: RAJESHWARAN D
 ###  ROLL NO :212223040165
 ###  DEPARTMENT:CSE
@@ -32,51 +31,87 @@ TABLE-01 EXITATION TABLE FOR H BRIDGE
 As shown in the circuit diagram we need only 3 Arduino terminal pins, pin 8 is for the push button which toggles the motor direction of rotation. Pins 9 and 10 are PWM signal outputs, at any time there is only 1 active PWM, this allows us to control the direction as well as the speed by varying the duty cycle of the PWM signal. The active PWM pin decides the motor direction of rotation (one at a time, the other output is logic 0).
 
 ### PROGRAM 
+```
+#include<Servo.h>
 
-int enable=6;
-int input1=3;
-int input2=4;
+Servo sr1;
 
+int pos=0;
+
+int red=9;
+
+int green=8;
 
 void setup()
-{
-  pinMode(enable, OUTPUT);
-  pinMode(input1, OUTPUT);
-  pinMode(input2, OUTPUT);
 
+{
+
+sr1.attach(6);
+
+Serial.begin(9600);
+
+pinMode(red, OUTPUT);
+
+pinMode(green,OUTPUT);
 
 }
 
 void loop()
+
 {
-  analogWrite(enable, 255);
-  delay(1000); // Wait for 1000 millisecond(s)
-  digitalWrite(input1, HIGH);
-  digitalWrite(input2, LOW);
-  delay(7000);
-  digitalWrite(input1, LOW);
-  digitalWrite(input2, HIGH);
-  delay(7000);
+
+for(pos=0;pos<=180;pos+=5){
+
+sr1.write(pos);
+
+delay(200);
+
+Serial.println(pos); }
+
+for(pos=180;pos>=180;pos-=5){
+
+sr1.write(pos);
+
+delay(200);
+
+Serial.println(pos); }
+
+if(pos>120)
+
+{
+
+digitalWrite(red,HIGH);
+
+delay(200);
+
+digitalWrite(red,LOW);
+
+delay(200); }
+
+else{
+
+digitalWrite(green, HIGH);
+
+delay(200); // Wait for 1000 millisecond(s)
+
+digitalWrite(green, LOW);
+
+delay(200); }
 
 }
-
+```
 
 ### OUTPUT
 
 ### CIRCUIT DIAGRAM
-![Circuit](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/90a410a0-f248-41ed-be54-bf6922ac3897)
-
+![image](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/cd4a7f5b-24c0-47e7-a99d-e01b9ec4ee65)
 
 ### SCHEMATIC VIEW
-![senimatic](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/aa75997f-366a-4e8a-b9e2-15e0685a1582)
+![WhatsApp Image 2024-04-29 at 2 57 25 PM](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/41648a70-b3ae-43d2-92db-a4e01a1a24c3)
 
+### GRAPH  
 
-### GRAPH AND TABULATION 
-
-![image](https://github.com/Kishorekumar22060/Experiment-no-7-DC-Motor-Speed-Control-Using-Arduino/assets/141472136/8be218a2-be7c-41b0-94e0-5aa7fba3592e)
-
-![image](https://github.com/Kishorekumar22060/Experiment-no-7-DC-Motor-Speed-Control-Using-Arduino/assets/141472136/51556e6e-5b30-4f70-8818-1f49efff9598)
-
+![image](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/bec221f6-f56c-4fb3-817e-582a0de4ff39)
 
 
 ### RESULTS AND DISCUSSION 
