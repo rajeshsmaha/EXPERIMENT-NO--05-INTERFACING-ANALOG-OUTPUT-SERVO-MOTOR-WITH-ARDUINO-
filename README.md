@@ -1,118 +1,120 @@
-###  DATE: 18/04/2024
+###  DATE: 14-03-2024
+
 ###  NAME: RAJESHWARAN D
 ###  ROLL NO :212223040165
-###  DEPARTMENT:CSE
+###  DEPARTMENT: CSE
 
-# Experiment-no-6-DC-Motor-Speed-Control-Using-Arduino
-### AIM : To control the speed and the direction of a DC motor using L293D driver ic( H- bridge)
 
-### Components Required:
-•	Arduino UNO board
-•	L293D driver
-•	12V DC motor
-•	10K ohm potentiometer
-•	Pushbutton
-•	12V source
-•	Breadboard
-•	Jumper wires
-### THEORY 
-The L293D quadruple half-H drivers chip allows us to drive 2 motors in both directions, with two PWM outputs from the Arduino we can easily control the speed as well as the direction of rotation of one DC motor. (PWM: Pulse Width Modulation).
-Arduino DC motor control circuit:
-Project circuit schematic diagram is the one below.
+# EXPERIMENT NO 05 INTERFACING ANALOG OUTPUT SERVO MOTOR WITH ARDUINO
 
-![image](https://user-images.githubusercontent.com/36288975/167763051-b230c183-afc5-46f2-ba95-0f95e10dd6c9.png)
-FIGURE-01 H BRIDGE CIRUCIT INTERFACE 
+### AIM
+To interface an Analog output (servo motor) and modify the angular displacement of the servo using PWM signal .
+COMPONENTS REQUIRED:
+1.	Servo motor of choice (9v is preferred )
+2.	1 KΩ resistor 
+3.	Arduino Uno 
+4.	USB Interfacing cable 
+5.	Connecting wires 
+6.	Servo rated power supply (dc source )
 
-The speed of the DC motor (both directions) is controlled with the 10k potentiometer which is connected to analog channel 0 (A0) and the direction of rotation is controlled with the push button which is connected to pin 8 of the Arduino UNO board. If the button is pressed the motor will change its direction directly.
-The L293D driver has 2 VCCs: VCC1 is +5V and VCC2 is +12V (same as motor nominal voltage). Pins IN1 and IN2 are the control pins where:
-![image](https://user-images.githubusercontent.com/36288975/167763120-1421c2c5-8381-49eb-b376-03f6e1113b7a.png)
-TABLE-01 EXITATION TABLE FOR H BRIDGE 
 
-As shown in the circuit diagram we need only 3 Arduino terminal pins, pin 8 is for the push button which toggles the motor direction of rotation. Pins 9 and 10 are PWM signal outputs, at any time there is only 1 active PWM, this allows us to control the direction as well as the speed by varying the duty cycle of the PWM signal. The active PWM pin decides the motor direction of rotation (one at a time, the other output is logic 0).
+### THEORY
+Servo motors and are constructed out of basic DC motors, by adding:
+•	 gear reduction
+•	 a position sensor for the motor shaft
+•	 an electronic circuit that controls the motor's operation
+Typically, a potentiometer (variable resistor) measures the position of the output shaft at all times so the controller can accurately place and maintain its setting.
+Servo motors are used for angular positioning, such as in radio control airplanes.  They typically have a movement range of 180 deg but can go up to 210 deg.The output shaft of a servo does not rotate freely, but rather is made to seek a particular angular position under electronic control. 
 
-### PROGRAM 
-```
+
+![image](https://user-images.githubusercontent.com/36288975/163544439-1f477927-fcd4-42f0-9ce4-c863fdbf1210.png)
+
+
+
+#### Figure-01 SERVO MOTOR SPLIT VIEW 
+Control 
+An external controller (such as the Arduino) tells the servo where to go with a signal know as pulse proportional modulation (PPM) or pulse code modulation (which is often confused with pulse width modulation, PWM). PWM uses 1 to 2ms out of a 20ms time period to encode its information.
+ 
+ 
+ ![image](https://user-images.githubusercontent.com/36288975/163544482-3027136f-7135-4f3d-a23f-8dc2fe04194d.png)
+
+### Figure-02 SERVO MOTOR PINS
+
+ ![image](https://user-images.githubusercontent.com/36288975/163544513-ca497421-e6ba-4f91-871f-5cfba77f22a8.png)
+
+
+### Figure-03 SERVO MOTOR OVERVIEW 
+
+ 
+![Screenshot 2024-03-14 111823](https://github.com/vasanthkumarch/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/144979368/b8fd2bc3-b8ce-4d03-a52a-01ee17e754d7)
+
+
+ 
+![Screenshot 2024-03-14 111931](https://github.com/vasanthkumarch/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/144979368/3dd4ee3a-30ab-4f05-9888-fb77319f081c)
+
+
+
+
+
+CIRCUIT DIAGRAM
+ 
+ 
+ ![image](https://user-images.githubusercontent.com/36288975/163544618-6eb8a7b5-7f1a-428a-8d9f-fd899b145efb.png)
+
+### FIGURE 04 CIRCUIT DIAGRAM
+
+### PROCEDURE:
+1.	Connect the circuit as per the circuit diagram 
+2.	Connect the board to your computer via the USB cable.
+3.	If needed, install the drivers.
+4.	Launch the Arduino IDE.
+5.	Select your board (If you the board is arduino uno, select accordingly).
+6.	Select your serial port, accordingly ( E.g. COM5 )
+7.	Open the file of the program  and verify the error , clear if any errors that are existing 
+8.	Upload the program and check for the physical working. 
+9.	Ensure safety before powering up the device.
+
+
+### PROGRAM :
+ 
 #include<Servo.h>
-
-Servo sr1;
-
-int pos=0;
-
-int red=9;
-
-int green=8;
+Servo S1;
+int pos = 0;
 
 void setup()
-
 {
-
-sr1.attach(6);
-
-Serial.begin(9600);
-
-pinMode(red, OUTPUT);
-
-pinMode(green,OUTPUT);
-
+  S1.attach(9);
+  Serial.begin(9600);
 }
 
 void loop()
-
 {
-
-for(pos=0;pos<=180;pos+=5){
-
-sr1.write(pos);
-
-delay(200);
-
-Serial.println(pos); }
-
-for(pos=180;pos>=180;pos-=5){
-
-sr1.write(pos);
-
-delay(200);
-
-Serial.println(pos); }
-
-if(pos>120)
-
-{
-
-digitalWrite(red,HIGH);
-
-delay(200);
-
-digitalWrite(red,LOW);
-
-delay(200); }
-
-else{
-
-digitalWrite(green, HIGH);
-
-delay(200); // Wait for 1000 millisecond(s)
-
-digitalWrite(green, LOW);
-
-delay(200); }
-
+  for(pos =0;pos<=180;pos+=1)
+  {
+    S1.write(pos);
+    delay(20);
+    Serial.print("Angle=");
+    Serial.println(pos);
+    	delay(500);
+  }
+  for(pos =180;pos>=0;pos-=1)
+  {
+    S1.write(pos);
+    delay(20);
+    Serial.print("Angle=");
+    Serial.println(pos);
+    	delay(500);
+  }
+  
 }
-```
-
-### OUTPUT
-
-### CIRCUIT DIAGRAM
-![image](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/cd4a7f5b-24c0-47e7-a99d-e01b9ec4ee65)
-
-### SCHEMATIC VIEW
-![WhatsApp Image 2024-04-29 at 2 57 25 PM](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/41648a70-b3ae-43d2-92db-a4e01a1a24c3)
-
-### GRAPH  
-
-![image](https://github.com/rajeshsmaha/EXPERIMENT-NO--05-INTERFACING-ANALOG-OUTPUT-SERVO-MOTOR-WITH-ARDUINO-/assets/147608800/bec221f6-f56c-4fb3-817e-582a0de4ff39)
 
 
-### RESULTS AND DISCUSSION 
-Control of the speed and the direction of a DC motor using L293D driver ic( H- bridge) is successfully executed
+
+
+
+
+
+
+
+### RESULTS: 
+Arduino uno interfacing with servo motor is learned and angular position is controlled using PWM signal.
